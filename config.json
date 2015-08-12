@@ -1,13 +1,20 @@
-{
-  "numberOfWatchers": "2",
-  "watchers": [
-    {
-      "source": "/Users/bryceosterhaus/liferay/repos/liferay-plugins-ee/themes/loop-theme/docroot/_diffs/css/",
-      "destination": "/Users/bryceosterhaus/liferay/bundles/ee62x/tomcat-7.0.56/webapps/loop-theme/css/"
-    },
-    {
-      "source": "/Users/bryceosterhaus/liferay/repos/liferay-plugins-ee/portlets/loop-portlet/docroot/",
-      "destination": "/Users/bryceosterhaus/liferay/bundles/ee62x/tomcat-7.0.56/webapps/loop-portlet/"
+[
+  {
+    "source": "/Users/bryceosterhaus/liferay/repos/liferay-plugins-ee/portlets/loop-portlet/docroot/",
+    "destination": "/Users/bryceosterhaus/liferay/bundles/ee62x/tomcat-7.0.56/webapps/loop-portlet/",
+    "sassConfig": {
+      "buildFile": "main.css",
+      "sourceFolder": "/Users/bryceosterhaus/liferay/repos/liferay-plugins-ee/portlets/loop-portlet/docroot/css/",
+      "destination": "/Users/bryceosterhaus/liferay/bundles/ee62x/tomcat-7.0.56/webapps/loop-portlet/css/"
     }
-  ]
-}
+  },
+  {
+    "source": "/Users/bryceosterhaus/liferay/repos/liferay-plugins-ee/themes/loop-theme/docroot/_diffs/css/",
+    "destination": "/Users/bryceosterhaus/liferay/bundles/ee62x/tomcat-7.0.56/webapps/loop-theme/css/",
+    "sassConfig": {
+      "buildFile": "custom.css",
+      "sourceFolder": "/Users/bryceosterhaus/liferay/repos/liferay-plugins-ee/themes/loop-theme/docroot/_diffs/css/",
+      "destination": "/Users/bryceosterhaus/liferay/bundles/ee62x/tomcat-7.0.56/webapps/loop-theme/css/"
+    }
+  }
+]
