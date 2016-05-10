@@ -18,9 +18,9 @@
   "dependencies": {
     "chalk": "^1.1.0",
     "fs-extra": "^0.22.1",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "gulp-ruby-sass": "^1.1.0",
-    "gulp-watch": "^4.3.1",
+    "gulp-watch": "^4.3.5",
     "inquirer": "^0.9.0",
     "path": "^0.11.14"
   }

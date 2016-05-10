@@ -4,20 +4,6 @@ var chalk = require('chalk');
 var fs = require('fs-extra');
 var watch = require('gulp-watch');
 var sass = require('gulp-ruby-sass');
-var inquirer = require("inquirer");
-
-// Variables
-
-var config = fs.readJsonSync('config.json');
-
-var numberOfWatchers = [
-	{
-		type: 'input',
-		name: 'numberOfWatchers',
-		message: 'How many directories would you like to watch?',
-		default: config.length
-	}
-];
 
 var sourceOptions = {
 	name: 'Source'
@@ -32,24 +18,6 @@ var sassConfigOptions = {
 	force: true,
 	scss: true
 }
-
-// Gulp Tasks
-
-gulp.task('config', function(cb) {
-	inquirer.prompt(numberOfWatchers, function(answers) {
-		var watchersCount = answers.numberOfWatchers;
-
-		var questionsArray = buildQuestions(answers, watchersCount);
-
-		inquirer.prompt(questionsArray, function(answers) {
-			var newConfig = writeConfig(answers, watchersCount);
-
-			fs.writeJsonSync('config.json', newConfig);
-
-			cb();
-		});
-	});
-});
 
 gulp.task('watch', function(cb) {
 	var config = fs.readJsonSync('config.json');
@@ -110,11 +78,6 @@ gulp.task('watch', function(cb) {
 				gulp.src(event).pipe(gulp.dest(destination));
 			}
 		})
-
-	watch(destinationsToWatch, destinationOptions)
-		.on('change', function(event) {
-			console.log(chalk.cyan('Destination ') + 'saw ' + chalk.magenta(event) + ' changed.');
-		});
 });
 
 // Methods
@@ -144,120 +107,4 @@ function compileSass(sassConfig) {
 		.on('end', function() {
 			console.log(chalk.cyan('Finished Compiling Sass to ') + destination);
 		});
-}
-
-function buildQuestions(answers, watchersCount) {
-	var questionsArray = [];
-
-	for (var i = 0; i < watchersCount; i++) {
-		var index = i;
-
-		var currentObject = config[i]
-
-		if (!currentObject) {
-			currentObject = {};
-		}
-
-		var source = {
-			type: 'input',
-			name: i + 'source',
-			message: 'Source',
-			default: currentObject.source || '',
-			validate: validatePath
-		};
-
-		questionsArray.push(source);
-
-		var destination = {
-			type: 'input',
-			name: i + 'destination',
-			message: 'Destination',
-			default: currentObject.destination || '',
-			validate: validatePath
-		};
-
-		questionsArray.push(destination);
-
-		var sassConfig = currentObject.sassConfig;
-
-		if (!sassConfig) {
-			sassConfig = currentObject;
-		}
-
-		var sass = {
-			type: 'confirm',
-			name: i + 'needSass',
-			message: 'Need to compile Sass?',
-			default: sassConfig || false
-		}
-
-		questionsArray.push(sass);
-
-		var whenFunc = function(answers) {
-			var keys = Object.keys(answers);
-
-			var lastKey = keys.pop();
-
-			return answers[lastKey];
-		}
-
-		var sassFile = {
-			when: whenFunc,
-			type: 'input',
-			name: i + 'sassFile',
-			message: 'Sass File to Compile?',
-			default: sassConfig.buildFile || ''
-		}
-
-		questionsArray.push(sassFile);
-
-		var sassSource = {
-			when: whenFunc,
-			type: 'input',
-			name: i + 'sassSource',
-			message: 'Sass source folder?',
-			default: sassConfig.sourceFolder || '',
-			validate: validatePath
-		}
-
-		questionsArray.push(sassSource);
-
-		var sassDestination = {
-			when: whenFunc,
-			type: 'input',
-			name: i + 'sassDestination',
-			message: 'Sass Destination folder?',
-			default: sassConfig.destination || '',
-			validate: validatePath
-		}
-
-		questionsArray.push(sassDestination);
-	}
-
-	return questionsArray;
-}
-
-function writeConfig(answers, watchersCount) {
-	var newConfig = [];
-
-	for (var i = 0; i < watchersCount; i++) {
-		var watcher = {
-			source: answers[i + 'source'],
-			destination: answers[i + 'destination']
-		};
-
-		if (answers[i + 'needSass']) {
-			var sassConfig = {
-				buildFile: answers[i + 'sassFile'],
-				sourceFolder: answers[i + 'sassSource'],
-				destination: answers[i + 'sassDestination'],
-			}
-
-			watcher.sassConfig = sassConfig;
-		}
-
-		newConfig.push(watcher);
-	}
-
-	return newConfig;
 }
